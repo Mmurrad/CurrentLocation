@@ -29,6 +29,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(view==start)
         {
             //startService(new Intent(this,ServiceClass.class));
-            locationCallback=new LocationCallback(){
+             locationCallback=new LocationCallback(){
                 @Override
                 public void onLocationResult(LocationResult locationResult) {
                     super.onLocationResult(locationResult);
@@ -88,6 +89,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Address address=addresses.get(0);
                             String loca=address.getAddressLine(0)+"\t"+address.getPostalCode()+"\t"+address.getLocality()+"\t"+address.getCountryCode();
                             Toast.makeText(getApplicationContext(),loca,Toast.LENGTH_LONG).show();
+                            try{
+
+                                float result[]=new float[10];
+                                Location.distanceBetween(s_latitude,s_longitude,latitude,longitude,result);
+
+                                distance.setText("Distance = "+result[0]/1000+" Km");
+
+                            }catch (Exception e)
+                            {
+                                Toast.makeText(MainActivity.this," "+e,Toast.LENGTH_LONG).show();
+                            }
+
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -99,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             };
             oncreateloaction();
-            /*Intent intent=new Intent(MainActivity.this,MapsActivity.class);
+           /*Intent intent=new Intent(MainActivity.this,MapsActivity.class);
             intent.putExtra("lati",latitude);
             intent.putExtra("long",longitude);
             startActivity(intent);*/
@@ -107,24 +120,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if(view==stop)
         {
+
            // stopService(new Intent(this,ServiceClass.class));
-            try{
-
-                float result[]=new float[10];
-                Location.distanceBetween(s_latitude,s_longitude,latitude,longitude,result);
-
-                distance.setText(""+result[0]);
-
-
-            }catch (Exception e)
-            {
-                Toast.makeText(MainActivity.this," "+e,Toast.LENGTH_LONG).show();
-            }
-
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+           // onPause();
         }
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(fusedLocationProviderClient!=null)
+        {
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        }
+    }
 
     private void oncreateloaction() {
         locationRequest = new LocationRequest();
