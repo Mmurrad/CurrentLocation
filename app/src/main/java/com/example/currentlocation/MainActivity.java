@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
                         //Toast.makeText(MainActivity.this,s_latitude+" "+s_longitude,Toast.LENGTH_LONG).show();
                     }
 
