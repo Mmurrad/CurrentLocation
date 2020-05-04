@@ -93,9 +93,22 @@
         android:layout_height="wrap_content"
         android:background="@drawable/text"
         android:textSize="20sp"
-        android:hint="Show distance"
+        android:hint="Here distance will be showed"
         android:padding="10dp"
         android:id="@+id/distance_id"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/address_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/text"
+        android:textSize="20sp"
+        android:hint="Here address will be showed"
+        android:padding="10dp"
         android:layout_marginRight="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="20dp"
